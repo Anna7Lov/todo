@@ -1,20 +1,19 @@
-import PropTypes from "prop-types";
-import { useState, useCallback } from "react";
-import "./NewTodoForm.scss";
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../../rdx/tasks/actions';
+import './NewTodoForm.scss';
 
-export const NewTodoForm = ({ addTodo }) => {
-  const [newTodo, setNewTodo] = useState("");
-  const [newDescription, setNewDescription] = useState("");
+export const NewTodoForm = () => {
+  const dispatch = useDispatch();
+  const [newTodo, setNewTodo] = useState('');
+  const [newDescription, setNewDescription] = useState('');
 
-  const onFormSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      addTodo(newTodo, newDescription);
-      setNewTodo("");
-      setNewDescription("");
-    },
-    [addTodo, newTodo, newDescription]
-  );
+  const onFormSubmit = useCallback((e) => {
+    e.preventDefault();
+    dispatch(addTask(newTodo, newDescription));
+    setNewTodo('');
+    setNewDescription('');
+  }, [newTodo, newDescription, dispatch]);
 
   const onInputChange = useCallback((e) => {
     setNewTodo(e.target.value);
@@ -22,7 +21,7 @@ export const NewTodoForm = ({ addTodo }) => {
 
   const onTextAreaChange = useCallback((e) => {
     setNewDescription(e.target.value);
-  }, []);  
+  }, []);
 
   return (
     <form className="todo-form" onSubmit={onFormSubmit}>
@@ -39,14 +38,10 @@ export const NewTodoForm = ({ addTodo }) => {
         value={newDescription}
         onChange={onTextAreaChange}
         placeholder="Description"
-      ></textarea>
+      />
       <button className="todo-form__button" type="submit">
         &#43; Add
       </button>
     </form>
   );
-};
-
-NewTodoForm.propTypes = {
-  addTodo: PropTypes.func.isRequired
 };

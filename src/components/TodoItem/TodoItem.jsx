@@ -1,39 +1,39 @@
-import PropTypes from "prop-types";
-import { useState, useCallback } from "react";
-import { DropDownList } from "../DropDownList/DropDownList";
-import "./TodoItem.scss";
+import PropTypes from 'prop-types';
+import { React, useState, useCallback } from 'react';
+import { DropDownList } from '../DropDownList/DropDownList';
+import './TodoItem.scss';
 
 const statusList = [
   {
     id: 1,
-    title: "New status:",
+    title: 'New status:',
     list: [
-      { id: 2, value: "► Change status" },
-      { id: 3, value: "Open" },
-      { id: 4, value: "In Progress" },
-      { id: 5, value: "Done" }
-    ]
-  }
+      { id: 2, value: '► Change status' },
+      { id: 3, value: 'Open' },
+      { id: 4, value: 'In Progress' },
+      { id: 5, value: 'Done' },
+    ],
+  },
 ];
 
 export const TodoItem = ({
-  todo,   
+  todo,
   isUpdated,
   onUpdate,
   setUpdatedItem,
   onStatusChange,
   onEdit,
-  onDelete
+  onDelete,
 }) => {
-  const [newValue, setNewValue] = useState(todo); 
-  
+  const [newValue, setNewValue] = useState(todo);
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
       onUpdate(newValue);
       setUpdatedItem(undefined);
     },
-    [onUpdate, newValue, setUpdatedItem]
+    [onUpdate, newValue, setUpdatedItem],
   );
 
   const onReset = useCallback(
@@ -42,7 +42,7 @@ export const TodoItem = ({
       setNewValue(todo);
       setUpdatedItem(undefined);
     },
-    [todo, setUpdatedItem]
+    [todo, setUpdatedItem],
   );
 
   const onTitleChange = useCallback(
@@ -52,10 +52,10 @@ export const TodoItem = ({
         ...newValue,
         title: value,
         status: todo.status,
-        updateDate: Date.now()
+        updateDate: Date.now(),
       });
     },
-    [newValue, todo.status]
+    [newValue, todo.status],
   );
 
   const onDescriptionChange = useCallback(
@@ -65,17 +65,17 @@ export const TodoItem = ({
         ...newValue,
         description: value,
         status: todo.status,
-        updateDate: Date.now()
+        updateDate: Date.now(),
       });
     },
-    [newValue, todo.status]
+    [newValue, todo.status],
   );
 
   const changeStatus = useCallback(
     (e) => {
       onStatusChange(todo.id, e.target.value);
     },
-    [onStatusChange, todo.id]
+    [onStatusChange, todo.id],
   );
 
   const onEditClick = useCallback(() => {
@@ -84,7 +84,7 @@ export const TodoItem = ({
 
   const onDeleteClick = useCallback(() => {
     onDelete(todo.id);
-  }, [onDelete, todo.id]);  
+  }, [onDelete, todo.id]);
 
   return (
     <li className="todo-item">
@@ -100,7 +100,7 @@ export const TodoItem = ({
             rows="5"
             onChange={onDescriptionChange}
             value={newValue.description}
-          ></textarea>
+          />
           <div>
             <div className="todo-item__buttons">
               <button className="todo-item__primary-button" type="submit">
@@ -118,16 +118,17 @@ export const TodoItem = ({
             <h2 className="todo-item__title">{todo.title}</h2>
             <p className="todo-item__description">{todo.description}</p>
             <span className="todo-item__data">
-              Current status:{" "}
+              Current status:
+              {' '}
               <span
                 style={{
                   fontWeight: 600,
                   color:
-                    todo.status === "Open"
-                      ? "rgb(228, 37, 31)"
-                      : todo.status === "In Progress"
-                      ? "rgb(255, 140, 0)"
-                      : "rgb(7, 150, 5)"
+                    todo.status === 'Open'
+                      ? 'rgb(228, 37, 31)'
+                      : todo.status === 'In Progress'
+                        ? 'rgb(255, 140, 0)'
+                        : 'rgb(7, 150, 5)',
                 }}
               >
                 {todo.status}
@@ -139,24 +140,31 @@ export const TodoItem = ({
               additionalClass="status-list"
             />
             <span className="todo-item__data">
-              Creation date:{" "}
+              Creation date:
+              {' '}
               {todo.creationDate
                 ? new Date(todo.creationDate).toLocaleDateString()
-                : ""}
+                : ''}
             </span>
             <span className="todo-item__data">
-              Update date:{" "}
+              Update date:
+              {' '}
               {todo.updateDate
                 ? new Date(todo.updateDate).toLocaleDateString()
-                : "No updates"}
+                : 'No updates'}
             </span>
           </div>
           <div className="todo-item__buttons">
-            <button className="todo-item__primary-button" onClick={onEditClick}>
+            <button
+              className="todo-item__primary-button"
+              type="submit"
+              onClick={onEditClick}
+            >
               &#10000; Edit
             </button>
             <button
               className="todo-item__danger-button"
+              type="submit"
               onClick={onDeleteClick}
             >
               &#10006; Delete
@@ -175,12 +183,12 @@ TodoItem.propTypes = {
     description: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     creationDate: PropTypes.number.isRequired,
-    updateDate: PropTypes.number
-  }),  
+    updateDate: PropTypes.number,
+  }),
   isUpdated: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   setUpdatedItem: PropTypes.func.isRequired,
   onStatusChange: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
 };
